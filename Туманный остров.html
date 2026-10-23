@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Туманный остров — ОНА ЖДЁТ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&family=Noto+Sans:wght@400;600&display=swap">
+<style>
+:root{--bg:#050000;--ink:#e8d6d6;--muted:#9a6a6a;--card:#120404;--line:#5a0a0a;--red:#d10a1f;--glow:#ff1a2e;
+color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% 20%,#2a0306 0,#0a0101 55%,#000 100%) fixed;color:var(--ink);font:16px/1.7 "Noto Sans",system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:30;background:radial-gradient(ellipse at center,transparent 40%,#000 100%);animation:flick 5s infinite}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:29;opacity:.12;background:repeating-linear-gradient(0deg,#000 0 2px,transparent 2px 4px)}
+@keyframes flick{0%,92%,96%,100%{opacity:1}93%{opacity:.4}95%{opacity:.7}}
+.drips{position:absolute;top:0;left:0;width:100%;height:150px;pointer-events:none}
+.drips path{fill:var(--red)}
+.wrap{max-width:720px;margin:0 auto;padding:60px 16px 48px;text-align:center;position:relative}
+.ad{font-size:11px;color:#6a2a2a;letter-spacing:.3em;margin:14px 0}
+h1{font:400 clamp(40px,12vw,72px)/1 Creepster,Impact,serif;color:var(--red);margin:20px 0 6px;letter-spacing:.04em;text-shadow:0 0 14px var(--glow),0 0 40px #600;animation:shk 3s infinite}
+@keyframes shk{0%,90%,100%{transform:none}92%{transform:translate(3px,-2px) skewX(4deg)}94%{transform:translate(-4px,2px)}96%{transform:translate(2px,1px) skewX(-3deg)}}
+.sub{color:var(--muted);font-style:italic;margin:0 0 16px}
+.note{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:4px;padding:14px 16px;text-align:left;font-size:14px;color:#c9a5a5}
+.note b{color:var(--glow)}
+.hero{position:relative;margin:30px auto 8px;max-width:320px;cursor:pointer;background:none;border:0;padding:0;display:block;width:100%}
+.hero .pent{position:absolute;inset:-14%;width:128%;height:128%;animation:spin 40s linear infinite;opacity:.55}
+.hero .girl{position:relative;width:100%;height:auto;filter:drop-shadow(0 0 24px #b00)}
+.hero:hover .girl,.hero:focus-visible .girl{filter:drop-shadow(0 0 40px var(--glow))}
+.hero:hover .eye{animation:none;fill:#fff}
+.eye{animation:blink 4s infinite}
+@keyframes blink{0%,94%,100%{opacity:1}96%{opacity:.1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hint{font-size:14px;color:var(--glow);margin:20px 0 0;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:28px 0 8px}
+.menu a{display:block;background:var(--card);border:1px solid var(--line);padding:14px 8px;color:var(--ink);text-decoration:none;font-weight:600;font-size:14px;transition:.2s;clip-path:polygon(0 0,96% 0,100% 20%,100% 100%,4% 100%,0 80%)}
+.menu a:hover{background:#2a0509;color:#fff;box-shadow:inset 0 0 20px #a00;letter-spacing:.04em}
+.menu small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+footer{margin-top:28px;font-size:12px;color:#7a4a4a}
+footer a{color:var(--red)}
+#game{position:fixed;inset:0;background:#000;display:none;z-index:50;flex-direction:column;color:var(--ink)}
+#game.on{display:flex}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;font-size:14px;z-index:6;position:relative}
+.bar button{background:none;border:1px solid var(--red);color:var(--ink);padding:6px 12px;font:inherit;cursor:pointer}
+#room{flex:1;position:relative;overflow:hidden;margin:0 auto;width:100%;max-width:720px}
+#room>svg{position:absolute;inset:0;width:100%;height:100%}
+.spot{cursor:pointer;transition:.2s}
+.spot:hover,.spot:focus{filter:brightness(1.7) drop-shadow(0 0 10px #f00);outline:none}
+#msg{min-height:92px;padding:14px 18px calc(18px + env(safe-area-inset-bottom,0px));background:#0a0000;border-top:1px solid var(--red);max-width:720px;width:100%;margin:0 auto;font-size:15px;color:#e8b8b8;z-index:6}
+#flash{position:absolute;inset:0;background:#000;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:5;cursor:pointer}
+#flash.on{display:flex;animation:scare .08s 14}
+#flash svg{width:min(90%,420px);height:auto;filter:drop-shadow(0 0 40px red)}
+#flash span{font:400 clamp(40px,14vw,90px) Creepster,Impact,serif;color:#ff1f30;text-shadow:0 0 30px #f00}
+@keyframes scare{25%{transform:translate(12px,-8px) scale(1.06);background:#400}75%{transform:translate(-12px,8px) scale(1.1);background:#000}}
+</style>
+</head>
+<body>
+<svg class="drips" viewBox="0 0 720 150" preserveAspectRatio="none" aria-hidden="true">
+<path d="M0 0H720V22Q700 24 696 50Q692 90 684 50Q680 26 640 24Q620 26 616 70Q612 120 604 70Q600 28 540 24Q500 22 496 40Q492 60 486 40Q480 24 420 22Q380 24 376 90Q372 140 366 90Q360 26 300 24Q260 22 256 54Q252 74 246 54Q240 26 180 22Q140 24 136 80Q132 110 126 80Q120 26 60 24Q30 24 26 46Q22 62 16 46Q10 24 0 22Z"/>
+</svg>
+<div class="wrap">
+  <div class="ad">— РЕКЛАМА —</div>
+  <h1>Туманный остров</h1>
+  <p class="sub">Ты вошёл. Она уже знает твоё имя.</p>
+  <div class="note"><b>Предупреждение.</b> Браузерный хоррор-квест. Звук, резкие кадры, кровь. Не играйте в одиночку и не играйте ночью. Если вы всё-таки решили — не оглядывайтесь.</div>
+
+  <button class="hero" id="start" aria-label="Войти в дом">
+    <svg class="pent" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="#c00" stroke-width="1.6"><circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="88"/><path d="M100 12L169 188L16 78H184L31 188Z"/></g></svg>
+    <svg class="girl" viewBox="0 0 200 240" aria-hidden="true">
+      <path d="M36 120Q26 38 100 26Q174 38 164 120L172 226Q100 204 28 226Z" fill="#0b0508"/>
+      <path d="M50 70Q34 30 58 6Q60 40 82 48Z M150 70Q166 30 142 6Q140 40 118 48Z" fill="#2a0a0a" stroke="#900" stroke-width="2"/>
+      <path d="M52 62L56 24L88 46Z M148 62L144 24L112 46Z" fill="#150506"/>
+      <ellipse cx="100" cy="110" rx="48" ry="56" fill="#cfc2bd"/>
+      <path d="M50 102Q70 54 100 62Q130 54 150 102Q120 80 100 86Q80 80 50 102Z" fill="#0b0508"/>
+      <ellipse cx="78" cy="114" rx="13" ry="15" fill="#000"/><ellipse cx="122" cy="114" rx="13" ry="15" fill="#000"/>
+      <circle class="eye" cx="78" cy="114" r="6" fill="#ff1a2e"/><circle class="eye" cx="122" cy="114" r="6" fill="#ff1a2e"/>
+      <path d="M78 128Q74 160 80 176M122 128Q128 156 120 182" stroke="#b00" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M68 146Q100 176 132 146L128 152L120 148L114 158L106 150L100 160L94 150L86 158L80 148L72 152Z" fill="#6a0000" stroke="#200" stroke-width="2"/>
+      <path d="M72 148l4 8l4-8M84 150l3 9l4-9M96 152l4 10l4-10M108 152l3 9l4-9M120 148l3 8l4-8" fill="#eee"/>
+      <path d="M68 164L100 196L132 164L152 232H48Z" fill="#190808"/>
+      <path d="M90 180h20M100 172v34" stroke="#900" stroke-width="3"/>
+    </svg>
+  </button>
+  <p class="hint">нажми. она ждёт.</p>
+
+  <div class="ad">— РЕКЛАМА —</div>
+
+  <nav class="menu" aria-label="Разделы">
+    <a href="#about">Об игре<small>что здесь случилось</small></a>
+    <a href="#mobile">Версия для телефона<small>короче, но не легче</small></a>
+    <a href="#deep">Глубокий режим<small>обратного пути нет</small></a>
+    <a href="#mini">Мини-игры<small>ритуалы и сюрпризы</small></a>
+    <a href="#news">Обновления<small>новые жертвы</small></a>
+    <a href="#guide">Прохождение<small>если выживете</small></a>
+  </nav>
+
+  <footer>
+    <p>Делитесь ссылкой только на эту страницу — иначе вступление вас не предупредит.</p>
+    <p><a href="#privacy">Политика конфиденциальности</a> · Обновлено: 23.10.2026</p>
+  </footer>
+</div>
+
+<div id="game" role="dialog" aria-modal="true" aria-label="Игра">
+  <div class="bar"><span id="count">Найдено: 0 / 3</span><button id="close">Бежать</button></div>
+  <div id="room">
+    <svg viewBox="0 0 400 420" preserveAspectRatio="xMidYMid slice">
+      <rect width="400" height="420" fill="#120303"/>
+      <path d="M0 0H400V30Q380 34 376 80Q372 130 366 80Q360 36 300 32Q280 38 270 120Q262 60 250 34Q200 30 150 32Q130 36 124 100Q118 36 80 32Q40 30 0 28Z" fill="#7a0010"/>
+      <rect y="300" width="400" height="120" fill="#080000"/>
+      <circle cx="200" cy="362" r="52" fill="none" stroke="#a00" stroke-width="2"/>
+      <path d="M200 312L236 408L160 346H240L164 408Z" fill="none" stroke="#a00" stroke-width="2"/>
+      <path d="M0 300H400" stroke="#400" stroke-width="3"/>
+      <g class="spot" tabindex="0" role="button" aria-label="Кукла" data-k="doll">
+        <rect x="34" y="236" width="76" height="64" fill="#2a0a0a"/>
+        <circle cx="72" cy="214" r="24" fill="#d8c6bd"/>
+        <circle cx="63" cy="210" r="5" fill="#f00"/><circle cx="82" cy="210" r="5" fill="#f00"/>
+        <path d="M58 224L64 230L70 224L76 230L82 224L88 230" stroke="#800" stroke-width="2" fill="none"/>
+        <path d="M63 216v14M82 216v18" stroke="#b00" stroke-width="2"/>
+      </g>
+      <g class="spot" tabindex="0" role="button" aria-label="Зеркало" data-k="mirror">
+        <ellipse cx="200" cy="170" rx="55" ry="80" fill="#3a0a0a" stroke="#700" stroke-width="6"/>
+        <ellipse cx="200" cy="170" rx="44" ry="68" fill="#020000"/>
+        <circle cx="186" cy="160" r="4" fill="#f00"/><circle cx="214" cy="160" r="4" fill="#f00"/>
+        <path d="M184 190Q200 204 216 190" stroke="#900" stroke-width="2" fill="none"/>
+      </g>
+      <g class="spot" tabindex="0" role="button" aria-label="Дверь" data-k="door">
+        <rect x="288" y="148" width="84" height="152" fill="#2a1408"/>
+        <rect x="298" y="162" width="64" height="58" fill="#180a04"/><circle cx="356" cy="244" r="5" fill="#a88"/>
+        <path d="M312 190l4-14l4 12l4-16l4 16l4-12l2 24Q326 214 312 200Z" fill="#a00"/>
+        <path d="M312 220v40M330 222v50M346 220v34" stroke="#900" stroke-width="3"/>
+      </g>
+      <circle cx="330" cy="62" r="16" fill="#a00" opacity=".8"/>
+    </svg>
+    <div id="flash">
+      <svg viewBox="0 0 200 240" aria-hidden="true">
+        <path d="M30 60Q20 10 50 0Q58 30 80 40M170 60Q180 10 150 0Q142 30 120 40" fill="#300" stroke="#f00" stroke-width="3"/>
+        <ellipse cx="100" cy="120" rx="68" ry="82" fill="#d8c8c0"/>
+        <ellipse cx="68" cy="108" rx="22" ry="26" fill="#000"/><ellipse cx="132" cy="108" rx="22" ry="26" fill="#000"/>
+        <circle cx="68" cy="108" r="9" fill="#f10"/><circle cx="132" cy="108" r="9" fill="#f10"/>
+        <path d="M68 134Q60 190 70 230M132 134Q142 186 128 236" stroke="#a00" stroke-width="7" fill="none"/>
+        <path d="M40 160Q100 250 160 160Q100 210 40 160Z" fill="#500"/>
+        <path d="M48 164l8 26l8-20l8 28l8-24l8 30l8-24l8 28l8-22l8 24l8-20l8 18l8-16" stroke="#fff" stroke-width="5" fill="none"/>
+      </svg>
+      <span>ОНА ЗДЕСЬ</span>
+    </div>
+  </div>
+  <div id="msg">Темно. Пахнет железом. Рядом кукла, зеркало и дверь.</div>
+</div>
+
+<script>
+(function(){
+  var game=document.getElementById('game'),msg=document.getElementById('msg'),cnt=document.getElementById('count'),flash=document.getElementById('flash');
+  var found={},ac=null,drone=null;
+  var texts={
+    doll:'Кукла дышит. На её платье чёрным по красному: «7». Глаза следят за вами.',
+    mirror:'В зеркале вы одни. Но стекло изнутри кто-то царапает: «ОНА ЗА ДВЕРЬЮ».',
+    door:'Ручка тёплая и мокрая. За дверью кто-то считает вслух: шесть… семь…'
+  };
+  function audio(){
+    try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+      var o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.value=48;g.gain.value=.05;
+      o.connect(g);g.connect(ac.destination);o.start();drone=o}catch(e){}
+  }
+  function scream(){
+    try{if(!ac)return;var n=ac.sampleRate*1.4,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);
+      for(var i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);
+      var s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();
+      s.buffer=b;f.type='bandpass';f.frequency.value=1800;g.gain.value=.9;
+      s.connect(f);f.connect(g);g.connect(ac.destination);s.start();
+      var o=ac.createOscillator(),og=ac.createGain();o.type='square';o.frequency.setValueAtTime(900,ac.currentTime);
+      o.frequency.exponentialRampToValueAtTime(200,ac.currentTime+1.2);og.gain.value=.25;
+      o.connect(og);og.connect(ac.destination);o.start();o.stop(ac.currentTime+1.3)}catch(e){}
+  }
+  function open(){game.classList.add('on');document.body.style.overflow='hidden';audio()}
+  function shut(){game.classList.remove('on');document.body.style.overflow='';try{drone&&drone.stop();drone=null}catch(e){}}
+  document.getElementById('start').onclick=open;
+  document.getElementById('close').onclick=shut;
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')shut()});
+  function pick(el){
+    var k=el.getAttribute('data-k'),n=Object.keys(found).length;
+    if(k==='door'&&n<2){msg.textContent='Дверь стучит изнутри. Она не откроется, пока вы не осмотрите комнату.';return}
+    found[k]=1;msg.textContent=texts[k];n=Object.keys(found).length;
+    cnt.textContent='Найдено: '+n+' / 3';
+    if(n===3){setTimeout(function(){flash.classList.add('on');scream();if(navigator.vibrate)navigator.vibrate([200,80,300])},1100)}
+  }
+  [].forEach.call(document.querySelectorAll('.spot'),function(el){
+    el.onclick=function(){pick(el)};
+    el.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(el)}};
+  });
+  flash.onclick=function(){flash.classList.remove('on');msg.textContent='Ты думал, это конец? Она запомнила тебя.'};
+})();
+</script>
+</body>
+</html>
